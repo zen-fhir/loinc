@@ -77,6 +77,8 @@ jobs:
         env:
           TG_UPDATES_BOT_TOKEN: ${{ secrets.TG_UPDATES_BOT_TOKEN }}
           TG_FTR_UPDATES_CHAT_ID: ${{ secrets.TG_FTR_UPDATES_CHAT_ID }}
+          LOINC_USER_PASSWORD: ${{ secrets.LOINC_USER_PASSWORD }}
+          LOINC_USER_LOGIN: ${{ secrets.LOINC_USER_LOGIN }}
         run: |
           cd /tmp/ftr-git-repo && \
           clj -X:pipeline ftr.ci-pipelines.loinc.core/pipeline \
