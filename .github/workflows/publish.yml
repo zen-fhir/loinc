@@ -82,8 +82,8 @@ jobs:
           clj -X:pipeline ftr.ci-pipelines.loinc.core/pipeline \
           :tg-bot-token '"'$TG_UPDATES_BOT_TOKEN'"' \
           :tg-channel-id '"'$TG_FTR_UPDATES_CHAT_ID'"' \
-          :loinc-password '"'$LOINC_USER_PASSWORD'"'
-          :loinc-login '"'$LOINC_USER_LOGIN'"'
+          :loinc-password '"'$LOINC_USER_PASSWORD'"' \
+          :loinc-login '"'$LOINC_USER_LOGIN'"' \
           :gs-object-url '"gs://ftr/loinc"' \
           :gs-ftr-object-url '"gs://ftr"' \
           :working-dir-path '"'$LOINC_WORKING_DIR_PATH'"' \
