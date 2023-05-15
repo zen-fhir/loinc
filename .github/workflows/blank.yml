@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+name: loinc-publish
+
+on:
+  schedule:
+    - cron: 0 0 */1 * *
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ["self-hosted", "service"]
+
+    container:
+      image: docker:git
+
+    steps:      
+      - run: cd /tmp
+
+      - name: 'Add bash, curl, rlwrap, make, python, java'
+        run: apk update && apk upgrade && apk add bash curl rlwrap make python3 py3-pip openjdk17 postgresql
+        
+      - name: 'Install clojure'
+        run: curl -O https://download.clojure.org/install/linux-install-1.11.1.1208.sh && chmod +x linux-install-1.11.1.1208.sh && ./linux-install-1.11.1.1208.sh
+
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+
+      - name: 'Clone FTR repo'
+        run: git clone --recurse-submodules https://github.com/HealthSamurai/ftr.git /tmp/ftr-git-repo
+        
+      - run: |
+          git config --global user.email "hello@health-samurai.io" && \
+          git config --global user.name "zen-fhir/loinc GH Action—Release"
+      
+      - run: cd /tmp/ftr-git-repo && docker compose rm -v -f && make up && cd -
+        
+      - name: 'Run FTR tests'
+        run: cd /tmp/ftr-git-repo && make test
+         
